@@ -15,7 +15,8 @@ app.use(
 			"https://final-smit-hackathon-qc45qkl2w-areeba-tahirs-projects.vercel.app/",
 			"https://final-smit-hackathon-production.up.railway.app",
 			/\.vercel\.app$/, // Wildcard for all Vercel subdomains
-			/\.up\.railway\.app$/, // Wildcard for all Railway subdomains],
+			/\.up\.railway\.app$/, // Wildcard for all Railway subdomains
+			],
 			methods: ['GET', 'PUT', 'POST', 'DELETE'],
 			credentials: true,
 			allowedHeaders: ['Content-Type', 'Authorization'],
