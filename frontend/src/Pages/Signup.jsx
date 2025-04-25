@@ -47,7 +47,7 @@ const Signup = () => {
             setLoading(true);
             console.log("values:", values);
             try {
-              const response = await fetch(`${apiUrl}/auth/user`, {
+              const response = await fetch(`${apiUrl}/api/auth/user`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(values),
