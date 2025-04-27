@@ -1,35 +1,27 @@
 import mongoose from 'mongoose';
 
-const taskSchema = mongoose.Schema(
+const taskSchema = new mongoose.Schema(
   {
     title: {
-      type: String,
+      type: mongoose.Schema.Types.String,
       required: true,
     },
-    description: {
-      type: String,
+    discription: {
+      type: mongoose.Schema.Types.String,
       required: true,
     },
-    assignedTo: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',  // Referring to the User model
-      required: true,
-    },
-    status: {
+    role: {
       type: String,
-      enum: ['To Do', 'In Progress', 'Done'],
-      default: 'To Do',
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
+      default: 'user',
     },
   },
   {
-    timestamps: true,  // Automatically adds createdAt and updatedAt
-  }
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
 );
 
-const Task = mongoose.model('Task', taskSchema);
-
+const Task = mongoose.model("Task", taskSchema);
 export default Task;

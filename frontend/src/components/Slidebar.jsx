@@ -15,15 +15,12 @@ const Sidebar = ({ onStatusChange }) => {
 
   const authNavItems = isAuthenticated
     ? [
-        { to: "/addtask", text: "Add Task" },
-        { to: "/todo", icon: faClipboardList, text: "To Do" },
-        { to: "/inprogress", icon: faCalendarCheck, text: "In Progress" },
-        { to: "/done", icon: faTachometerAlt, text: "Done" },
+        { to: "/taskManagement", icon: faCalendarCheck, text: "Task Management" },
         { to: "/logout", icon: faSignOutAlt, text: "Logout" },
       ]
     : [
         { to: "/signup", icon: faSignOutAlt, text: "Sign Up" },
-        { to: "/login", icon: faSignOutAlt, text: "Login" },
+        { to: "/", icon: faSignOutAlt, text: "Login" },
       ];
 
   return (
