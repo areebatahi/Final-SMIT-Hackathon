@@ -58,7 +58,7 @@ const Signup = () => {
               console.log("Response:", response, "data", data);
               if (response.ok) {  
                 toast.success(data.message);
-                navigate('/taskManagement');
+                navigate('/');
               } else {
                 toast.error(data.message || "An error occurred while signing up");
               }
