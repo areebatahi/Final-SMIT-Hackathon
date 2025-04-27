@@ -14,14 +14,14 @@ const Sidebar = ({ onStatusChange }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const authNavItems = isAuthenticated
-    ? [
-      { to: "/signup", icon: faSignOutAlt, text: "Sign Up" },
-      { to: "/", icon: faSignOutAlt, text: "Login" },
-    ]
-    : [
-      { to: "/taskManagement", icon: faCalendarCheck, text: "Task Management" },
-      { to: "/logout", icon: faSignOutAlt, text: "Logout" },
-    ];
+  ? [
+    { to: "/taskManagement", icon: faCalendarCheck, text: "Task Management" },
+    { to: "/logout", icon: faSignOutAlt, text: "Logout" },
+  ]
+  : [
+    { to: "/signup", icon: faSignOutAlt, text: "Sign Up" },
+    { to: "/", icon: faSignOutAlt, text: "Login" },
+  ];
 
   return (
     <div className="w-64 h-screen bg-black shadow-lg fixed top-0 left-0 flex flex-col text-white">
@@ -31,7 +31,7 @@ const Sidebar = ({ onStatusChange }) => {
           <Link
             key={item.to}
             to={item.to}
-            onClick={() => onStatusChange(item.text)}  // Update status on click
+            onClick={() => onStatusChange?.(item.text)}
             className={`flex items-center p-3 rounded-lg transition duration-300 ${location.pathname === item.to
                 ? "text-black bg-[#F7F7F7] font-semibold"
                 : ""
