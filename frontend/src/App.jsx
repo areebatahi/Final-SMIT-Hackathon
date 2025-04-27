@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
-    <Router>
+    
       <div className="flex">
         <Sidebar />
         <div className="flex-1 ml-64 min-h-screen bg-gray-50 p-4">
@@ -33,7 +33,7 @@ const App = () => {
           </Routes>
         </div>
       </div>
-    </Router>
+
   );
 };
 
