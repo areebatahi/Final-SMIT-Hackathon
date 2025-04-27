@@ -15,13 +15,13 @@ const Sidebar = ({ onStatusChange }) => {
 
   const authNavItems = isAuthenticated
     ? [
-        { to: "/taskManagement", icon: faCalendarCheck, text: "Task Management" },
-        { to: "/logout", icon: faSignOutAlt, text: "Logout" },
-      ]
+      { to: "/", icon: faSignOutAlt, text: "Sign Up" },
+      { to: "/login", icon: faSignOutAlt, text: "Login" },
+    ]
     : [
-        { to: "/", icon: faSignOutAlt, text: "Sign Up" },
-        { to: "/login", icon: faSignOutAlt, text: "Login" },
-      ];
+      { to: "/taskManagement", icon: faCalendarCheck, text: "Task Management" },
+      { to: "/logout", icon: faSignOutAlt, text: "Logout" },
+    ];
 
   return (
     <div className="w-64 h-screen bg-black shadow-lg fixed top-0 left-0 flex flex-col text-white">
@@ -32,11 +32,10 @@ const Sidebar = ({ onStatusChange }) => {
             key={item.to}
             to={item.to}
             onClick={() => onStatusChange(item.text)}  // Update status on click
-            className={`flex items-center p-3 rounded-lg transition duration-300 ${
-              location.pathname === item.to
+            className={`flex items-center p-3 rounded-lg transition duration-300 ${location.pathname === item.to
                 ? "text-black bg-[#F7F7F7] font-semibold"
                 : ""
-            }`}
+              }`}
           >
             <FontAwesomeIcon icon={item.icon} className="mr-3" />
             {item.text}
