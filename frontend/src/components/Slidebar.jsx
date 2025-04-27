@@ -15,8 +15,8 @@ const Sidebar = ({ onStatusChange }) => {
 
   const authNavItems = isAuthenticated
     ? [
-      { to: "/", icon: faSignOutAlt, text: "Sign Up" },
-      { to: "/login", icon: faSignOutAlt, text: "Login" },
+      { to: "/signup", icon: faSignOutAlt, text: "Sign Up" },
+      { to: "/", icon: faSignOutAlt, text: "Login" },
     ]
     : [
       { to: "/taskManagement", icon: faCalendarCheck, text: "Task Management" },
