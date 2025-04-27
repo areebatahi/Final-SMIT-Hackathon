@@ -20,7 +20,7 @@ const Sidebar = ({ onStatusChange }) => {
       ]
     : [
         { to: "/signup", icon: faSignOutAlt, text: "Sign Up" },
-        { to: "/", icon: faSignOutAlt, text: "Login" },
+        { to: "/login", icon: faSignOutAlt, text: "Login" },
       ];
 
   return (
