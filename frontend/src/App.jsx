@@ -30,7 +30,7 @@ const App = () => {
         />
     
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/taskManagement" element={<TaskManagement />} />
         <Route path="/logout" element={<Logout />} />
