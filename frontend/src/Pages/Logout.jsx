@@ -10,7 +10,7 @@ const Logout = () => {
 
  useEffect(()=>{
     dispatch(logout())
-    navigate("/signup")
+    navigate("/")
 
  })
 
