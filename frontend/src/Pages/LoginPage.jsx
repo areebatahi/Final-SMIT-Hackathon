@@ -41,7 +41,7 @@ const Login = () => {
 			setLoading(false);
 			if (response.ok) {
 				localStorage.setItem("token",data.token)
-				localStorage.setItem("userId",data._id)
+				localStorage.setItem("userId",data.id)
 				dispatch(loginSuccess({
 					token:data.token,
 					userId:data.userId
