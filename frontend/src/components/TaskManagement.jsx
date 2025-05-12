@@ -8,14 +8,10 @@ const TaskManagement = () => {
 
   const statuses = ['To Do', 'In Progress', 'Done'];
 
-  // Fetch all tasks on page load
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const response = await fetch(`${apiUrl}/tasks`);
-        if (!response.ok) {
-          throw new Error('Error fetching tasks');
-        }
         const data = await response.json();
         setTasks(data);
       } catch (error) {
@@ -26,20 +22,13 @@ const TaskManagement = () => {
     fetchTasks();
   }, []);
 
-  // Create a new task
   const createTask = async () => {
     try {
       const response = await fetch(`${apiUrl}/tasks`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTask),
       });
-
-      if (!response.ok) {
-        throw new Error('Error creating task');
-      }
 
       const task = await response.json();
       setTasks([...tasks, task]);
@@ -49,39 +38,24 @@ const TaskManagement = () => {
     }
   };
 
-  // Delete a task
   const deleteTask = async (id) => {
     try {
-      const response = await fetch(`${apiUrl}/tasks/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Error deleting task');
-      }
-
+      await fetch(`${apiUrl}/tasks/${id}`, { method: 'DELETE' });
       setTasks(tasks.filter(task => task._id !== id));
     } catch (error) {
       console.error('Error deleting task:', error);
     }
   };
 
-  // Update Task Status (Move task between columns)
   const updateTaskStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`${apiUrl}/tasks/${id}`, {
+      await fetch(`${apiUrl}/tasks/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),
       });
 
-      if (!response.ok) {
-        throw new Error('Error updating task status');
-      }
-
-      setTasks(tasks.map((task) =>
+      setTasks(tasks.map(task =>
         task._id === id ? { ...task, status: newStatus } : task
       ));
     } catch (error) {
@@ -89,77 +63,90 @@ const TaskManagement = () => {
     }
   };
 
-  // Filter tasks based on their status
-  const filterTasksByStatus = (status) => {
-    return tasks.filter(task => task.status === status);
+  const filterTasksByStatus = (status) => tasks.filter(task => task.status === status);
+
+  const badgeColor = {
+    'To Do': 'bg-red-500',
+    'In Progress': 'bg-yellow-500',
+    'Done': 'bg-green-500',
   };
 
   return (
-    <div className="container mx-auto p-4 bg-gray-50 min-h-screen">
-      {/* New Task Form */}
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Create New Task</h2>
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Task Title"
-            value={newTask.title}
-            onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            onClick={createTask}
-            className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
-          >
-            Add Task
-          </button>
+    <div className="min-h-screen bg-gradient-to-tr from-slate-100 via-slate-200 to-slate-100 flex flex-col">
+      {/* Navbar */}
+      <nav className="bg-indigo-600 text-white py-4 px-6 shadow-md">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Task Manager</h1>
+          <span className="text-sm">Stay organized 💼</span>
         </div>
-      </div>
+      </nav>
 
-      {/* Task List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {statuses.map((status) => (
-          <div key={status} className="bg-white shadow-lg rounded-lg p-6 space-y-4">
-            <h2 className="text-2xl font-semibold text-center mb-4 capitalize">{status}</h2>
-            <div className="space-y-4">
-              {filterTasksByStatus(status).map((task) => (
-                <div key={task._id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-md flex flex-col space-y-4 hover:shadow-lg transition-shadow duration-300">
-                  <h3 className="text-xl font-semibold text-gray-900">{task.title}</h3>
-                  <p className="text-gray-600">{task.description}</p>
-                  <div className="flex justify-between items-center mt-4">
-                    {/* Task Status Badge */}
-                    <span className={`px-3 py-1 text-xs font-semibold rounded-full ${status === 'To Do' ? 'bg-red-500' : status === 'In Progress' ? 'bg-yellow-500' : 'bg-green-500'} text-white`}>
-                      {task.status}
-                    </span>
-
-                    {/* Status Update Dropdown */}
-                    <select
-                      value={task.status}
-                      onChange={(e) => updateTaskStatus(task._id, e.target.value)}
-                      className="p-2 border border-gray-300 rounded-md text-sm"
-                    >
-                      {statuses.map((statusOption) => (
-                        <option key={statusOption} value={statusOption}>
-                          {statusOption}
-                        </option>
-                      ))}
-                    </select>
-
-                    {/* Delete Button */}
-                    <button
-                      onClick={() => deleteTask(task._id)}
-                      className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-300 text-sm"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <main className="flex-1 container mx-auto p-6">
+        {/* Task Creation */}
+        <div className="max-w-3xl mx-auto mb-10 bg-white p-6 rounded-xl shadow-xl">
+          <h2 className="text-2xl font-semibold mb-4 text-slate-800">Create New Task</h2>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <input
+              type="text"
+              placeholder="Task Title"
+              value={newTask.title}
+              onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+              className="flex-1 p-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-400 outline-none"
+            />
+            <button
+              onClick={createTask}
+              className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300"
+            >
+              Add Task
+            </button>
           </div>
-        ))}
-      </div>
+        </div>
 
+        {/* Task Board */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {statuses.map((status) => (
+            <div key={status} className="bg-white p-5 rounded-2xl shadow-xl border border-gray-100">
+              <h3 className="text-xl font-bold text-center mb-4 text-slate-700">{status}</h3>
+              <div className="space-y-4">
+                {filterTasksByStatus(status).map((task) => (
+                  <div
+                    key={task._id}
+                    className="p-5 bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300"
+                  >
+                    <h4 className="text-lg font-semibold text-slate-800 mb-2">{task.title}</h4>
+
+                    <div className="flex justify-between items-center flex-wrap gap-2">
+                      {/* Badge */}
+                      <span className={`text-xs px-3 py-1 rounded-full font-semibold text-white ${badgeColor[task.status]}`}>
+                        {task.status}
+                      </span>
+
+                      {/* Styled Select */}
+                      <select
+                        value={task.status}
+                        onChange={(e) => updateTaskStatus(task._id, e.target.value)}
+                        className="text-sm px-3 py-2 rounded-md bg-white border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-300 focus:outline-none"
+                      >
+                        {statuses.map((option) => (
+                          <option key={option} value={option}>{option}</option>
+                        ))}
+                      </select>
+
+                      {/* Delete Button */}
+                      <button
+                        onClick={() => deleteTask(task._id)}
+                        className="bg-red-600 text-white px-4 py-1 rounded-md hover:bg-red-700 text-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 };

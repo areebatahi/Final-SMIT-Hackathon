@@ -4,8 +4,8 @@ import LoginPage from './Pages/LoginPage';
 import SignUp from './Pages/Signup';
 import Logout from "./Pages/Logout";
 import TaskManagement from './components/TaskManagement';
-import Sidebar from './components/Slidebar';
 import { ToastContainer } from 'react-toastify';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const location = useLocation();
@@ -14,12 +14,12 @@ const App = () => {
     console.log("Status changed to:", statusText);
   };
 
+  const isTaskPage = location.pathname === "/taskManagement";
+
   return (
-    <div className="flex">
-      <Sidebar onStatusChange={handleStatusChange} />
-      <div className="flex-1 ml-64 min-h-screen bg-gray-50 p-4">
-        {/* Move ToastContainer here if you want it inside the main content */}
-        <ToastContainer />
+    <div className="min-h-screen flex flex-col bg-slate-100">
+      <Navbar onStatusChange={handleStatusChange} />
+      <div className={`${isTaskPage ? '' : 'flex flex-1 items-center justify-center px-4'}`}>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<SignUp />} />
@@ -27,6 +27,8 @@ const App = () => {
           <Route path="/logout" element={<Logout />} />
         </Routes>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };
