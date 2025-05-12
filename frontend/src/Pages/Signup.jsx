@@ -58,7 +58,7 @@ const Signup = () => {
               if (response.ok) {
                 toast.success(data.message, {
                   position: "top-right",
-                  autoClose: 3000, // Auto-close after 3 seconds
+                  autoClose: 3000,
                   hideProgressBar: true,
                   closeOnClick: true,
                   pauseOnHover: false,

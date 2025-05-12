@@ -20,6 +20,7 @@ const App = () => {
     <div className="min-h-screen flex flex-col bg-slate-100">
       <Navbar onStatusChange={handleStatusChange} />
       <div className={`${isTaskPage ? '' : 'flex flex-1 items-center justify-center px-4'}`}>
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<SignUp />} />
