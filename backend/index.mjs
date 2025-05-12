@@ -29,7 +29,7 @@ app.use(
 app.use(express.json());
 const port = process.env.PORT || 5000;
 
-app.use("/api/auth", userRoutes);
+app.use("/auth", userRoutes);
 app.use("/tasks", taskRoutes);
 
 
