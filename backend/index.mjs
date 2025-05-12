@@ -29,8 +29,8 @@ app.use(
 app.use(express.json());
 const port = process.env.PORT || 5000;
 
-app.use("/auth", userRoutes);
-app.use("/tasks", taskRoutes);
+app.use("api/auth", userRoutes);
+app.use("api/tasks", taskRoutes);
 
 
 app.use("/", (req, res, next) => {
