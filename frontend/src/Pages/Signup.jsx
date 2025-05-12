@@ -19,7 +19,6 @@ const validationSchema = Yup.object({
     .matches(/^[^\s@]+@[^\s@]+\.(com|net)$/, "Only .com and .net domains are allowed")
     .required("Email is required"),
 
-
   password: Yup.string()
     .min(3, "Password must be at least 3 characters long")
     .max(30, "Password must not exceed 30 characters")
@@ -56,16 +55,40 @@ const Signup = () => {
               const data = await response.json();
               setLoading(false);
               console.log("Response:", response, "data", data);
-              if (response.ok) {  
-                toast.success(data.message);
+              if (response.ok) {
+                toast.success(data.message, {
+                  position: "top-right",
+                  autoClose: 3000, // Auto-close after 3 seconds
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: false,
+                  theme: "light",
+                });
                 navigate('/');
               } else {
-                toast.error(data.message || "An error occurred while signing up");
+                toast.error(data.message || "An error occurred while signing up", {
+                  position: "top-right",
+                  autoClose: 3000, // Auto-close after 3 seconds
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: false,
+                  theme: "light",
+                });
               }
             } catch (error) {
               setLoading(false);
               console.log("Error:", error);
-              toast.error(error.message || "An error occurred while signing up");
+              toast.error(error.message || "An error occurred while signing up", {
+                position: "top-right",
+                autoClose: 3000, // Auto-close after 3 seconds
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: "light",
+              });
             }
           }}
         >

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -16,6 +17,7 @@ const TaskManagement = () => {
         setTasks(data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
+        toast.error('Failed to fetch tasks. Please try again.');
       }
     };
 
@@ -33,8 +35,26 @@ const TaskManagement = () => {
       const task = await response.json();
       setTasks([...tasks, task]);
       setNewTask({ title: '', status: 'To Do' });
+      toast.success('Task created successfully!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'light',
+      });
     } catch (error) {
       console.error('Error creating task:', error);
+      toast.error('Error creating task. Please try again.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'light',
+      });
     }
   };
 
@@ -42,8 +62,26 @@ const TaskManagement = () => {
     try {
       await fetch(`${apiUrl}/tasks/${id}`, { method: 'DELETE' });
       setTasks(tasks.filter(task => task._id !== id));
+      toast.success('Task deleted successfully!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'light',
+      });
     } catch (error) {
       console.error('Error deleting task:', error);
+      toast.error('Error deleting task. Please try again.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'light',
+      });
     }
   };
 
@@ -58,8 +96,26 @@ const TaskManagement = () => {
       setTasks(tasks.map(task =>
         task._id === id ? { ...task, status: newStatus } : task
       ));
+      toast.success('Task status updated successfully!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'light',
+      });
     } catch (error) {
       console.error('Error updating task status:', error);
+      toast.error('Error updating task status. Please try again.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'light',
+      });
     }
   };
 
