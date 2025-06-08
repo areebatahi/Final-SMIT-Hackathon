@@ -4,10 +4,12 @@ import taskRoutes from "./routes/taskRoutes.mjs";
 import cors from "cors";
 import connectToDB from "./db/dataBase.mjs";
 
-//Connecting MongoDB
+// Connect to MongoDB
 connectToDB();
+
 const app = express();
 
+// CORS Configuration
 app.use(
   cors({
     origin: [
@@ -15,8 +17,8 @@ app.use(
       "http://localhost:5173",
       "https://final-smit-hackathon-ks94-4emtviy89-areeba-tahirs-projects.vercel.app",
       "https://final-smit-hackathon-ks94.vercel.app",
-      /\.vercel\.app$/, // Wildcard for all Vercel subdomains
-      /\.up\.railway\.app$/, // Wildcard for all Railway subdomains
+      /\.vercel\.app$/,
+      /\.up\.railway\.app$/,
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -25,16 +27,24 @@ app.use(
 );
 
 app.use(express.json());
-const port = process.env.PORT || 5000;
 
-app.use("/api/auth", userRoutes);
-app.use("/api/tasks", taskRoutes);
+// ✅ Handle Preflight Requests Globally
+app.options("*", (req, res) => {
+  res.sendStatus(200);
+});
 
-app.use("/", (req, res, next) => {
-  console.log("Request URL:", req.url, "method: ", req.method);
+// ✅ Log All Requests (Optional Debugging)
+app.use((req, res, next) => {
+  console.log("Request URL:", req.url, "Method:", req.method);
   next();
 });
 
+// ✅ API Routes
+app.use("/api/auth", userRoutes);
+app.use("/api/tasks", taskRoutes);
+
+// ✅ Start Server
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
