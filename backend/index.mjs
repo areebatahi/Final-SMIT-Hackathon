@@ -16,8 +16,6 @@ app.use(
       "http://localhost:5174",
       "http://localhost:5173",
       "https://final-smit-hackathon-ks94.vercel.app",
-      "https://final-smit-hackathon-ks94-4emtviy89-areeba-tahirs-projects.vercel.app",
-      "https://final-smit-hackathon-nine.vercel.app/",
       /\.vercel\.app$/,
       /\.up\.railway\.app$/,
     ],
