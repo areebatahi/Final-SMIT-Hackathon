@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useDispatch } from 'react-redux';
-import { logout } from "../store/authSlice"
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../store/authSlice";
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
 const TaskManagement = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({ title: "", status: "To Do" });
@@ -78,7 +80,7 @@ const TaskManagement = () => {
 
   const colorMap = {
     "To Do": "border-blue-700",
-    "In Progress": "border-red-500",
+    "In Progress": "border-yellow-500",
     Done: "border-green-600",
   };
 
@@ -90,12 +92,13 @@ const TaskManagement = () => {
       {/* Header */}
       <header className="bg-[#1f3b5c] rounded-xl p-6 text-white flex justify-between items-center mb-6 shadow-md">
         <h1 className="text-3xl font-extrabold">TASK MANAGER</h1>
-
         <div className="flex items-center gap-4">
-          <span className="text-sm hidden sm:inline">Stay organized 💼</span>
           <button
-            onClick={()=>dispatch(logout())}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 text-sm rounded-full transition"
+            onClick={() => {
+              dispatch(logout());
+              navigate("/");
+            }}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 text-sm rounded-full transition cursor-pointer"
           >
             Logout
           </button>
@@ -103,33 +106,37 @@ const TaskManagement = () => {
       </header>
 
       {/* Add Task Section */}
-      <div className="bg-white rounded-xl shadow p-6 mb-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-        <div className="flex-1">
-          <label className="block text-lg font-semibold text-gray-700 mb-2">
-            Create New Task
-          </label>
-          <input
-            type="text"
-            placeholder="Task Title"
-            value={newTask.title}
-            onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm bg-gray-100"
-          />
+      <div className="bg-white rounded-xl shadow p-6 mb-8 max-w-8xl mx-auto">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+          <div className="flex-1">
+            <label className="block text-lg font-semibold text-gray-700 mb-2">
+              Create New Task
+            </label>
+            <div className="flex gap-3">
+              <input
+                type="text"
+                placeholder="Task Title"
+                value={newTask.title}
+                onChange={(e) => setNewTask({ title: e.target.value })}
+                className="flex-grow px-4 py-3 border border-gray-300 rounded-lg text-sm bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#1f3b5c] transition"
+              />
+              <button
+                onClick={createTask}
+                className="bg-[#1f3b5c] text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-[#16334a] transition cursor-pointer"
+              >
+                + Add Task
+              </button>
+            </div>
+          </div>
         </div>
-        <button
-          onClick={createTask}
-          className="bg-[#1f3b5c] text-white px-6 py-2 rounded-lg text-sm font-semibold"
-        >
-          + Add Task
-        </button>
       </div>
 
       {/* Task Columns */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6">
         {statuses.map((status) => (
           <div
             key={status}
-            className={`bg-white border-2 ${colorMap[status]} rounded-xl shadow p-4`}
+            className={`bg-white border-t-4 ${colorMap[status]} rounded-xl shadow-lg p-5 transition-all duration-200`}
           >
             <h3 className="text-xl font-bold text-center mb-4 text-gray-800">
               {status}
@@ -145,27 +152,47 @@ const TaskManagement = () => {
                   </h4>
 
                   <div className="space-y-2">
-                    <select
-                      value={task.status}
-                      onChange={(e) =>
-                        updateTaskStatus(task._id, e.target.value)
-                      }
-                      className="w-full text-sm border border-gray-300 rounded-md px-2 py-1"
+                    {/* Status display */}
+                    <div
+                      className={`text-sm font-medium px-3 py-1 rounded-full inline-block w-fit ${
+                        task.status === "To Do"
+                          ? "bg-blue-100 text-blue-700"
+                          : task.status === "In Progress"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
                     >
-                      {statuses.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
+                      {task.status}
+                    </div>
+
+                    {/* Action dropdown only if not Done */}
+                    {task.status !== "Done" && (
+                      <select
+                        value=""
+                        onChange={(e) =>
+                          updateTaskStatus(task._id, e.target.value)
+                        }
+                        className="w-full text-sm border border-gray-300 rounded-md px-2 py-1"
+                      >
+                        <option value="" disabled>
+                          Action
                         </option>
-                      ))}
-                    </select>
+                        {task.status === "To Do" && (
+                          <option value="In Progress">In Progress</option>
+                        )}
+                        {task.status === "In Progress" && (
+                          <option value="Done">Done</option>
+                        )}
+                      </select>
+                    )}
 
                     <div className="flex justify-between">
-                      <button className="text-xs px-3 py-1 bg-gray-200 rounded-md">
-                        Action
-                      </button>
+                      <span className="text-xs text-gray-400">
+                        ID: {task._id.slice(-4)}
+                      </span>
                       <button
                         onClick={() => deleteTask(task._id)}
-                        className="text-xs px-3 py-1 bg-red-500 text-white rounded-md"
+                        className="text-xs px-3 py-1 bg-red-500 text-white rounded-md cursor-pointer"
                       >
                         Delete
                       </button>

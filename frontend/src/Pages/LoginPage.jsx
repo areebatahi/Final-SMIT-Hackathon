@@ -1,138 +1,99 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../store/authSlice';
-const apiUrl = import.meta.env.VITE_API_BASE_URL;
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const dispatch = useDispatch();
-
-  const [loading, setLoading] = useState(false);
+export default function Login() {
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formData);
-
-    try {
-      const response = await fetch(`${apiUrl}/auth/user/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
+    setTimeout(() => {
       setLoading(false);
-
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("userId", data.id);
-        dispatch(loginSuccess({
-          token: data.token,
-          userId: data.userId
-        }));
-        toast.success(data.message, {
-          position: "top-right",
-          autoClose: 3000, // Auto-close after 3 seconds
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          theme: "light",
-        });
-
-        navigate('/taskManagement');
-      } else {
-        toast.error(data.message || 'Invalid email or password', {
-          position: "top-right",
-          autoClose: 3000, // Auto-close after 3 seconds
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          theme: "light",
-        });
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error('Error:', error);
-      toast.error(error.message || 'An error occurred while logging in', {
-        position: "top-right",
-        autoClose: 3000, // Auto-close after 3 seconds
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        theme: "light",
-      });
-    }
+      navigate("/taskManagement");
+    }, 1500);
   };
 
   return (
-    <div className='flex justify-center items-center min-h-screen px-4'>
-      <div className='relative flex flex-col rounded-xl bg-white shadow-lg p-6 w-full max-w-md'>
-        <h2 className='text-2xl font-semibold text-gray-800 text-center'>Login</h2>
-        <p className='text-gray-500 text-center mb-6'>Welcome back! Enter your details to sign in.</p>
-        <form className='space-y-4' onSubmit={handleSubmit}>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="bg-white border border-gray-200 shadow-md p-8 rounded-xl w-[400px] transition-all duration-300">
+        <h2 className="text-3xl font-bold text-gray-800 text-center mb-2 tracking-tight">
+          Welcome Back 👋
+        </h2>
+        <p className="text-center text-gray-600 mb-6">Login to your account</p>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className='block text-sm font-medium text-gray-700'>Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Email
+            </label>
             <input
-              onChange={handleChange}
-              name='email'
-              type='email'
-              className='w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-              placeholder='Your Email'
+              id="email"
+              name="email"
+              type="email"
               required
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             />
           </div>
-          <div>
-            <label className='block text-sm font-medium text-gray-700'>Password</label>
-            <div className='relative'>
-              <input
-                onChange={handleChange}
-                name='password'
-                type={showPassword ? 'text' : 'password'}
-                className='w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10'
-                placeholder='Your Password'
-                required
-              />
-              <button
-                type='button'
-                className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 focus:outline-none'
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
+
+          <div className="relative">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              required
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Ab9#xP4!qLm2"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none pr-10 transition"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute top-9 right-3 text-gray-600 hover:text-gray-800 transition"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
           </div>
 
           <button
-            className='w-full bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 rounded-md transition-all duration-300 disabled:bg-gray-500'
-            type='submit'
+            type="submit"
             disabled={loading}
+            className="w-full py-2 bg-[#1f3b5c] hover:bg-[#2a4a7b] text-white rounded-md font-medium transition disabled:opacity-50"
           >
-            {loading ? 'Logging In...' : 'Log In'}
+            {loading ? "Logging in..." : "Log In"}
           </button>
         </form>
+
+        <p className="mt-6 text-center text-gray-700 text-sm">
+          Don’t have an account?{" "}
+          <Link
+            to="/signup"
+            className="text-[#1f3b5c] font-semibold hover:underline"
+          >
+            Sign Up
+          </Link>
+        </p>
       </div>
     </div>
   );
-};
-
-export default Login;
+}
