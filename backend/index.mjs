@@ -27,6 +27,10 @@ app.use(
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
 // ✅ Handle Preflight Requests Globally
 app.options("*", (req, res) => {
   res.sendStatus(200);
