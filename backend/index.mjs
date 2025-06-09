@@ -15,9 +15,9 @@ app.use(
     origin: [
       "http://localhost:5174",
       "http://localhost:5173",
-      "https://final-smit-hackathon-ks94.vercel.app",
-      /\.vercel\.app$/,
-      /\.up\.railway\.app$/,
+      // "https://final-smit-hackathon-ks94.vercel.app",
+      // /\.vercel\.app$/,
+      // /\.up\.railway\.app$/,
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
