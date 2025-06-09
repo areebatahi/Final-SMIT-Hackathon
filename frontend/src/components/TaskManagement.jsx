@@ -117,7 +117,7 @@ const TaskManagement = () => {
                 type="text"
                 placeholder="Task Title"
                 value={newTask.title}
-                onChange={(e) => setNewTask({ title: e.target.value })}
+                onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                 className="flex-grow px-4 py-3 border border-gray-300 rounded-lg text-sm bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#1f3b5c] transition"
               />
               <button
